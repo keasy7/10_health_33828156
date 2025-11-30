@@ -13,7 +13,7 @@ USE health;
 CREATE TABLE IF NOT EXISTS users (
     id            INT AUTO_INCREMENT,
     username      VARCHAR(50) UNIQUE, -- reminder to add uniqueness error handling
-    password      VARCHAR(256),      -- reminder to write the function to hash the first inserted password
+    password      VARCHAR(256),
     email         VARCHAR(100),
     first_name    VARCHAR(50),
     last_name     VARCHAR(50),
@@ -102,6 +102,7 @@ CREATE TABLE IF NOT EXISTS friends (
     user_id    INT,
     friend_id  INT,
     added_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status     VARCHAR(20) NOT NULL DEFAULT 'pending',
     PRIMARY KEY(id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (friend_id) REFERENCES users(id)
