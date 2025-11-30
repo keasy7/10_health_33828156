@@ -84,7 +84,7 @@ router.post('/loggedIn', function (req, res, next) {
 
             if (result == true) {
                 req.session.userId = results[0].id; //creating session
-                return res.send('You are now logged in, welcome back '+ username)
+                return res.redirect('/dashboard');
             } else {
                 return res.send('Login failed, please check your username and password and try again.')
             }
