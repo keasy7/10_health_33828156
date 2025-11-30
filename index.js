@@ -8,6 +8,7 @@ var session = require('express-session')
 const app = express()
 const port = 8000
 const expressSanitizer = require('express-sanitizer');
+const { redirectLogin } = require('./middleware/auth');
 
 // Tell Express that we want to use EJS as the templating engine
 app.set('view engine', 'ejs')
