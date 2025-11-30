@@ -3,8 +3,8 @@
 -- =========================================================
 
 -- Create database
-CREATE DATABASE IF NOT EXISTS health_tracker;
-USE health_tracker;
+CREATE DATABASE IF NOT EXISTS health;
+USE health;
 
 -- =======================
 -- Users table
@@ -110,5 +110,5 @@ CREATE TABLE IF NOT EXISTS friends (
 -- =========================================
 -- Create database-access user for the app
 -- =========================================
-CREATE USER IF NOT EXISTS 'health_tracker'@'localhost' IDENTIFIED BY 'qwertyuiop';
-GRANT ALL PRIVILEGES ON health_tracker.* TO 'health_tracker'@'localhost';
+CREATE USER IF NOT EXISTS 'health_app'@'localhost' IDENTIFIED BY 'qwertyuiop';
+GRANT ALL PRIVILEGES ON health.* TO 'health_app'@'localhost';

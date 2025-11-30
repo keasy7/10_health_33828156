@@ -41,10 +41,10 @@ app.use(session({
 
 // Define the database connection pool
 const db = mysql.createPool({
-    host: 'localhost',
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    host: process.env.HEALTH_HOST,
+    user: process.env.HEALTH_USER,
+    password: process.env.HEALTH_PASSWORD,
+    database: process.env.HEALTH_DATABASE,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,

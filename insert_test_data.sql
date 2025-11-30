@@ -1,4 +1,4 @@
-USE health_tracker;
+USE health;
 
 INSERT INTO users (username, password) VALUES ('gold', 'smiths'), ('firstFriend', 'password');
 
