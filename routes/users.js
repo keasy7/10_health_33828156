@@ -92,7 +92,7 @@ router.post('/loggedIn', function (req, res, next) {
     })
 })
 
-router.get('/profile/:username', async (req, res, next) => {
+router.get('/profile/:username', async (req, res, next) => { // CURRENT ISSUE IS HERE. PROFILE PAGE NOT RECEIVING FRIENDS VARIABLE
     const username = req.params.username;
 
     try {
@@ -104,20 +104,57 @@ router.get('/profile/:username', async (req, res, next) => {
                 return res.status(404).send('User not found');
             }
 
-            const user = results[0]; //retrieve user info
-            const self = req.session.userId === user.id; // Check if the profile belongs to the logged-in user
+            const user = results[0];                   // retrieve user info
+            const self = req.session.userId === user.id; // Check if viewing own profile
+
             const recentWorkoutsSql = 'SELECT * FROM workouts WHERE user_id = ? ORDER BY date_logged DESC LIMIT 5';
 
-            db.query(recentWorkoutsSql, [user.id], (err, workoutResults) => { //retrieve recent workouts
+            db.query(recentWorkoutsSql, [user.id], (err, workoutResults) => { // retrieve recent workouts
                 if (err) return next(err);
 
-                res.render('profile.ejs', { user, self, workouts: workoutResults });
+                const friendsQuery = "SELECT * FROM friends WHERE user_id = ? OR friend_id = ?";
+                db.query(friendsQuery, [req.session.userId, req.session.userId], (err2, friends) => {
+                    if (err2) return next(err2);
+
+                    res.render('profile.ejs', { user, self, workouts: workoutResults, friends, loggedInUserId: req.session.userId});
+                });
             });
         });
+
     } catch (err) {
         next(err);
     }
 });
+
+router.get('/search',function(req, res, next){
+    res.render("search.ejs")
+});
+
+router.get('/search_result', 
+    [query('search_text').isLength({ min: 1 }),
+     query('search_text').trim().escape()],
+    function (req, res, next) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('search.ejs'); // resets page if wrong input
+        } else {  
+            const keyword = `%${req.query.search_text}%`;
+            const loggedInUserId = req.session.userId; // makes sure logged in user isnt a search result themselves
+            const sqlquery = "SELECT * FROM users WHERE username LIKE ? AND id != ?";
+
+            db.query(sqlquery, [keyword, loggedInUserId], (err, result) => {
+                if (err) return next(err);
+
+                    const friendsQuery = "SELECT * FROM friends WHERE user_id = ? OR friend_id = ?"; //gets all friend involvements from database involving the logged in user
+                    db.query(friendsQuery, [loggedInUserId, loggedInUserId], (err2, friends) => {
+                        if (err2) return next(err2);
+
+
+            // Step 3: render template
+            res.render('search_result.ejs', { users: result, friends, loggedInUserId });
+        });
+    });
+}});
 
 // Export the router object so index.js can access it
 module.exports = router

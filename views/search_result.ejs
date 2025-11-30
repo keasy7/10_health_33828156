@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Friend search results</title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1>Friend Search Results</h1>
+        <form action="/users/search_result" method="GET">
+        <input id="search-box" type="text" name="search_text">
+        <input type="submit" value="Search" >
+        </form>
+    <h2>Results matching your search:</h2>
+<ul>
+  <% if (users.length > 0) { %>
+    <% users.forEach(user => { %>
+      <li> <!--- displays users -->
+        <%= user.username %>
+
+        <% 
+          let friendship = friends.find(f => 
+            (f.user_id === loggedInUserId && f.friend_id === user.id) ||
+            (f.friend_id === loggedInUserId && f.user_id === user.id)
+          );
+
+          let isRecipientPending = friends.find(f => 
+            f.user_id === user.id && f.friend_id === loggedInUserId && f.status === 'pending'
+          );
+        %> <!--- logic to filter conditions for receiving friend requests -->
+
+        <% if (!friendship) { %>
+        <form method="POST" action="/friends/add">
+        <input type="hidden" name="friendId" value="<%= user.id %>" /> <!--- identifies friend in database -->
+        <input type="hidden" name="friendUsername" value="<%= user.username %>" /><!--- used to redirect -->
+        <button type="submit">Add Friend</button>
+        </form>
+        <% } else if (isRecipientPending) { %>
+        <form method="POST" action="/friends/accept">
+        <input type="hidden" name="friendId" value="<%= user.id %>" /> <!--- identifies friend in database -->
+        <input type="hidden" name="friendUsername" value="<%= user.username %>" /> <!--- used to redirect -->
+        <button type="submit">Accept Request</button>
+        </form>
+        <% } else if (friendship.status === 'pending') { %> <!--- removing button functionality under other circumstances -->
+          <button disabled>Pending</button>
+        <% } else if (friendship.status === 'accepted') { %>
+          <button disabled>Friend</button> 
+        <% } %>
+
+      </li>
+    <% }) %>
+  <% } else { %>
+    <li>No results found.</li>
+  <% } %>
+</ul>
+  </body>
+</html>

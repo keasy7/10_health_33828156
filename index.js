@@ -104,5 +104,9 @@ app.use('/users', usersRoutes)
 const workoutRoutes = require('./routes/workouts')
 app.use('/workouts', workoutRoutes)
 
+// Load the route handlers for /friends
+const friendsRoutes = require('./routes/friends');
+app.use('/friends', friendsRoutes);
+
 // Start the web app listening
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

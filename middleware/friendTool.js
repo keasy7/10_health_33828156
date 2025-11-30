@@ -24,4 +24,24 @@ const removeFriend = (userId, friendId) => {
     });
 };
 
-module.exports = { addFriend, removeFriend };
+const acceptFriendRequest = (userId, friendId) => {
+    let sqlquery = `UPDATE friends SET status = 'accepted' WHERE user_id = ? AND friend_id = ?`;
+
+    db.query(sqlquery, [userId, friendId], (err, results) => {
+        if (err) {
+            // Try swapping the userId and friendId if the first update fails
+            db.query(sqlquery, [friendId, userId], (err2, results2) => {
+                if (err2) {
+                    console.error('Error accepting friend request:', err2);
+                    return;
+                } else {
+                    console.log('Friend request accepted successfully (swapped IDs)');
+                }
+            });
+        } else {
+            console.log('Friend request accepted successfully');
+        }
+    });
+};
+
+module.exports = { addFriend, removeFriend, acceptFriendRequest };

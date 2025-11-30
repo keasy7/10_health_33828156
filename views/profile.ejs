@@ -11,40 +11,78 @@
     </h1>
 
     <p><strong>Username:</strong> <%= user.username %></p> <!-- username is always present -->
-      <% if (user.first_name || user.last_name) { %> <!-- checking if there are more names --->
-        <p><strong>Name:</strong> 
-          <%= user.first_name ? user.first_name : '' %> 
-          <%= user.last_name ? user.last_name : '' %>
-        </p>
-      <% } %> <!-- conditional drawing of elements --->
+
+    <% if (user.first_name || user.last_name) { %> <!-- checking if there are more names -->
+      <p><strong>Name:</strong> 
+        <%= user.first_name ? user.first_name : '' %> 
+        <%= user.last_name ? user.last_name : '' %>
+      </p>
+    <% } %> <!-- conditional drawing of elements -->
+
+  <% 
+    // do not redeclare friends; it is already available <!-- CURRENT ISSUE IS HERE. NOT READING VARIABLES RIGHT-->
+    const friendship = friends.find(f => 
+      (f.user_id === loggedInUserId && f.friend_id === user.id) ||
+      (f.friend_id === loggedInUserId && f.user_id === user.id)
+    );
+
+    const isRecipientPending = friends.find(f => 
+      f.user_id === user.id && f.friend_id === loggedInUserId && f.status === 'pending'
+    );
+  %>
+ <!--- logic to filter conditions for receiving friend requests -->
+
+      <% if (!friendship) { %> <!-- no friendship exists -->
+        <form method="POST" action="/friends/add">
+          <input type="hidden" name="friendId" value="<%= user.id %>" /> <!-- identifies friend in database -->
+          <input type="hidden" name="friendUsername" value="<%= user.username %>" /> <!-- used to redirect -->
+          <button type="submit">Add Friend</button>
+        </form>
+
+      <% } else if (isRecipientPending) { %> <!-- you received request, can accept -->
+        <form method="POST" action="/friends/accept">
+          <input type="hidden" name="friendId" value="<%= user.id %>" /> <!-- identifies friend in database -->
+          <input type="hidden" name="friendUsername" value="<%= user.username %>" /> <!-- used to redirect -->
+          <button type="submit">Accept Request</button>
+        </form>
+
+      <% } else if (friendship.status === 'pending') { %> <!-- request outgoing or awaiting response -->
+        <button disabled>Pending</button>
+
+      <% } else if (friendship.status === 'accepted') { %> <!-- already friends -->
+        <button disabled>Friend</button>
+      <% } %>
+
+    <% } %> <!-- end hide buttons on own profile -->
 
     <h2>Recent Workouts</h2>
 
-    <% if (workouts && workouts.length > 0) { %>
-        <ul>
-            <% workouts.forEach(workout => { %>
-            <li>
-                <strong>Type:</strong> <%= workout.type %><br/>
-                <% if (workout.duration !== null) { %>
-                <strong>Duration:</strong> <%= workout.duration %> minutes<br/>
-                <% } %>
-                <% if (workout.distance !== null) { %>
-                <strong>Distance:</strong> <%= workout.distance %> km<br/>
-                <% } %>
-                <% if (workout.reps !== null) { %>
-                <strong>Reps:</strong> <%= workout.reps %><br/>
-                <% } %>
-                <% if (workout.sets !== null) { %>
-                <strong>Sets:</strong> <%= workout.sets %><br/>
-                <% } %>
-                <% if (workout.date_logged) { %>
-                <strong>Date:</strong> <%= new Date(workout.date_logged).toDateString() %><br/>
-                <% } %>
-            </li>
-            <% }) %> <!-- drawing only complete data--> 
-        </ul>
-        <% } else { %>
-        <p>No workouts logged yet.</p>
-        <% } %>
+    <% if (workouts && workouts.length > 0) { %> <!-- drawing only complete data -->
+      <ul>
+        <% workouts.forEach(workout => { %>
+          <li>
+            <strong>Type:</strong> <%= workout.type %><br/>
+            <% if (workout.duration !== null) { %>
+              <strong>Duration:</strong> <%= workout.duration %> minutes<br/>
+            <% } %>
+            <% if (workout.distance !== null) { %>
+              <strong>Distance:</strong> <%= workout.distance %> km<br/>
+            <% } %>
+            <% if (workout.reps !== null) { %>
+              <strong>Reps:</strong> <%= workout.reps %><br/>
+            <% } %>
+            <% if (workout.sets !== null) { %>
+              <strong>Sets:</strong> <%= workout.sets %><br/>
+            <% } %>
+            <% if (workout.date_logged) { %>
+              <strong>Date:</strong> <%= new Date(workout.date_logged).toDateString() %><br/>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No workouts logged yet.</p>
+    <% } %>
+
   </body>
 </html>
