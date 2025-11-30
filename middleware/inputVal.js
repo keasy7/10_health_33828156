@@ -16,6 +16,14 @@ const validate = (type) => {
             return check('username')
             .isLength({ min: 5, max: 20})
             .withMessage('Username must be between 5 and 20 characters');
+        case 'first':
+            return check('first')
+            .isLength({ min: 1, max: 50})
+            .withMessage('First name must be between 1 and 50 characters');
+        case 'last':
+            return check('last')
+            .isLength({ min: 1, max: 50})
+            .withMessage('Last name must be between 1 and 50 characters');
         default:
             throw new Error(`Unknown validation type: ${type}`);
     }

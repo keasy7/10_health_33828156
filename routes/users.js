@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
-const { redirectLogin } = require('./middleware/auth');
-const { validate, hashPassword } = require('./middleware/inputVal');
+const { redirectLogin } = require('../middleware/auth');
+const { validate, hashPassword } = require('../middleware/inputVal');
 const { query, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 
@@ -89,5 +89,29 @@ router.post('/loggedIn', function (req, res, next) {
         })
     })
 })
+
+router.get('/profile/:username', async (req, res, next) => {
+    const username = req.params.username; // extract the username from the URL
+
+    try {
+        // Query the database for this user
+        const sql = 'SELECT id, first, last, email, username FROM users WHERE username = ?';
+        db.query(sql, [username], (err, results) => {
+            if (err) return next(err);
+
+            if (results.length === 0) {
+                return res.status(404).send('User not found');
+            }
+
+            const user = results[0];
+
+            // Render a dynamic EJS page and pass the user data
+            res.render('profile.ejs', { user });
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
 // Export the router object so index.js can access it
 module.exports = router

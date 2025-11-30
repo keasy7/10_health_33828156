@@ -101,7 +101,7 @@ const usersRoutes = require('./routes/users')
 app.use('/users', usersRoutes)
 
 // Load the route handlers for /workouts
-const workoutRoutes = require('./routes/workouts.js')
+const workoutRoutes = require('./routes/workouts')
 app.use('/workouts', workoutRoutes)
 
 // Start the web app listening

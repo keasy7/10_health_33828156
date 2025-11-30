@@ -1,10 +1,14 @@
 const express = require("express")
 const router = express.Router()
-const { redirectLogin } = require('./middleware/auth');
+const { redirectLogin } = require('../middleware/auth');
 
 router.get('/',function(req, res, next){
+    if (req.session.userId) {
+        res.redirect('/dashboard');
+        return;
+    }else{  
     res.render('index.ejs')
-});
+}});
 
 router.get('/about',function(req, res, next){
     res.render('about.ejs')
@@ -18,6 +22,10 @@ router.get('/logout', redirectLogin, (req,res) => {
     res.send('you are now logged out. <a href='+'./'+'>Home</a>');
     })
 })
+
+router.get('/dashboard', redirectLogin, (req, res) => {
+    res.render('dashboard.ejs');
+});
 
 
 module.exports = router
