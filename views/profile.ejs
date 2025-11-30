@@ -10,8 +10,8 @@
       <%= self ? "Your Profile" : (user.username + "'s Profile") %>
     </h1>
 
-    <p><strong>Username:</strong> <%= user.username %></p>
-      <% if (user.first_name || user.last_name) { %>
+    <p><strong>Username:</strong> <%= user.username %></p> <!-- username is always present -->
+      <% if (user.first_name || user.last_name) { %> <!-- checking if there are more names --->
         <p><strong>Name:</strong> 
           <%= user.first_name ? user.first_name : '' %> 
           <%= user.last_name ? user.last_name : '' %>
@@ -41,7 +41,7 @@
                 <strong>Date:</strong> <%= new Date(workout.date_logged).toDateString() %><br/>
                 <% } %>
             </li>
-            <% }) %>
+            <% }) %> <!-- drawing only complete data--> 
         </ul>
         <% } else { %>
         <p>No workouts logged yet.</p>
