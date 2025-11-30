@@ -21,4 +21,9 @@ const validate = (type) => {
     }
 };
 
-module.exports = { validate };
+const hashPassword = async (plainTextPassword) => {
+    const hash = await bcrypt.hash(plainTextPassword, saltrounds);
+    return hash;
+}
+
+module.exports = { validate, hashPassword };
