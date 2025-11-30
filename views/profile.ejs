@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Register for the health app</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  </head>
+
+  <body>
+    <h1>
+      <%= self ? "Your Profile" : (user.username + "'s Profile") %>
+    </h1>
+
+    <p><strong>Username:</strong> <%= user.username %></p>
+            <% if (user.first_name !== null) { %>
+    <p><strong>First Name:</strong> <%= user.first_name %></p>
+            <% } %>
+            <% if (user.last_name !== null) { %>
+    <p><strong>Last Name:</strong> <%= user.last_name %></p>
+            <% } %> <!-- conditional drawing of elements --->
+
+    <h2>Recent Workouts</h2>
+
+    <% if (workouts && workouts.length > 0) { %>
+        <ul>
+            <% workouts.forEach(workout => { %>
+            <li>
+                <strong>Type:</strong> <%= workout.type %><br/>
+                <% if (workout.duration !== null) { %>
+                <strong>Duration:</strong> <%= workout.duration %> minutes<br/>
+                <% } %>
+                <% if (workout.distance !== null) { %>
+                <strong>Distance:</strong> <%= workout.distance %> km<br/>
+                <% } %>
+                <% if (workout.reps !== null) { %>
+                <strong>Reps:</strong> <%= workout.reps %><br/>
+                <% } %>
+                <% if (workout.sets !== null) { %>
+                <strong>Sets:</strong> <%= workout.sets %><br/>
+                <% } %>
+                <% if (workout.date_logged) { %>
+                <strong>Date:</strong> <%= new Date(workout.date_logged).toDateString() %><br/>
+                <% } %>
+            </li>
+            <% }) %>
+        </ul>
+        <% } else { %>
+        <p>No workouts logged yet.</p>
+        <% } %>
+  </body>
+</html>

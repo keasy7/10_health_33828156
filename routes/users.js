@@ -35,8 +35,8 @@ router.post('/registered',
             ];
 
             // 3. Insert into database
-            const sqlQuery = "INSERT INTO users (first, last, email, username, password) VALUES (?,?,?,?,?)";
-            db.query(sqlQuery, newRecord, (err, result) => {
+            let sqlquery = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?,?,?,?,?)";
+            db.query(sqlquery, newRecord, (err, result) => {
                 if (err) {
                     return next(err);
                 }
@@ -45,8 +45,10 @@ router.post('/registered',
                 req.session.userId = result.insertId; 
 
                 // 5. Send confirmation message
-                const message = `Hello ${newRecord[0]} ${newRecord[1]}! You are now registered. We will send an email to ${newRecord[2]}.`;
-                res.send(message);
+                //const message = `Hello ${newRecord[0]} ${newRecord[1]}! You are now registered. We will send an email to ${newRecord[2]}.`;
+                //res.send(message);
+                res.redirect(`/users/profile/${newRecord[3]}`); // newRecord[3] = username
+
             });
         } catch (err) {
             console.error('Error hashing password:', err);
@@ -91,11 +93,10 @@ router.post('/loggedIn', function (req, res, next) {
 })
 
 router.get('/profile/:username', async (req, res, next) => {
-    const username = req.params.username; // extract the username from the URL
+    const username = req.params.username;
 
     try {
-        // Query the database for this user
-        const sql = 'SELECT id, first, last, email, username FROM users WHERE username = ?';
+        const sql = 'SELECT id, first_name, last_name, email, username FROM users WHERE username = ?';
         db.query(sql, [username], (err, results) => {
             if (err) return next(err);
 
@@ -103,10 +104,15 @@ router.get('/profile/:username', async (req, res, next) => {
                 return res.status(404).send('User not found');
             }
 
-            const user = results[0];
+            const user = results[0]; //retrieve user info
+            const self = req.session.userId === user.id; // Check if the profile belongs to the logged-in user
+            const recentWorkoutsSql = 'SELECT * FROM workouts WHERE user_id = ? ORDER BY date_logged DESC LIMIT 5';
 
-            // Render a dynamic EJS page and pass the user data
-            res.render('profile.ejs', { user });
+            db.query(recentWorkoutsSql, [user.id], (err, workoutResults) => { //retrieve recent workouts
+                if (err) return next(err);
+
+                res.render('profile.ejs', { user, self, workouts: workoutResults });
+            });
         });
     } catch (err) {
         next(err);
