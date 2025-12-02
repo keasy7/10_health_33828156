@@ -1,43 +1,89 @@
+/* background for whole page*/
+body {
+    background-color: rgb(230, 230, 230);
+    margin: 0;
+    padding: 2vw; /* spacing around edge */
+    text-align: center;
+}
+
 h1 {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    color: darkcyan;
+    /* Suggested Font: Segoe UI or Roboto are clean and medical-looking */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    
+    /* 5vw means the font size is 5% of the browser window's width */
+    font-size: 4vw; 
+    
+    color: rgb(56, 0, 69);
+    margin-bottom: 1vw;
 }
 
 h2 {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    color: cadetblue;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 3.5vw;
+    
+    color: rgb(72, 43, 79);
+    margin-bottom: 1vw;
 }
 
-p,li {
-    font-family: Arial, Helvetica, sans-serif;
+p, li {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.8vw;
+  
+    color: rgb(33, 64, 82);
 }
 
-a:link {
-    color: orangered;
+
+/* Unvisited link */
+a:link, a:visited {
+    color: rgb(119, 136, 153);
     text-decoration: none;
-    padding:5px;
-  }
-  
-  /* visited link */
-  a:visited {
-    color: tomato;
-    text-decoration: none;
-    padding:5px;
-  }
-  
-  /* mouse over link */
-  a:hover {
+    padding: 0.5vw;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.8vw;
+}
+
+a:hover {
     color: white;
     text-decoration: none;
-    background-color: orangered;
-    padding:5px;
-  }
-  
-  /* selected link */
-  a:active {
-    color: blue;
-    text-decoration: none;
-    padding:5px;
-  }
+    background-color: rgb(56, 0, 69);
+    padding: 0.5vw;
+    border-radius: 4px; /* modern rounding*/
+}
+
+/* Selected link:  */
+a:active {
+    color: rgb(33, 64, 82); 
+    background-color: transparent;
+    text-decoration: underline;
+    padding: 0.5vw;
+}
+/* FORM STYLES */
+
+form {
+    background-color: rgb(204, 198, 198); /* Requested darker grey */
+    padding: 2vw; /* Adds breathing room inside the grey box */
+    border-radius: 8px; /* Softens the corners */
+    display: inline-block; /* Shrinks form to fit content */
+}
+/* Style for submit buttons on forms*/
+input[type="submit"] {
+    background-color: rgb(56, 0, 69);
+    color: white;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.5vw; 
+    padding: 0.5vw 1vw;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1vw;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.3s;
+}
+
+/* Button hover effect */
+input[type="submit"]:hover {
+    background-color: rgb(72, 43, 79);
+}
