@@ -11,6 +11,7 @@
     </style>
   </head>
   <body>
+    <p><a href="/">Home</a></p>
     <h1>Your Workouts</h1>
     <form action="/workouts/add" method="POST">
         
@@ -87,6 +88,13 @@
               <% if (workout.duration !== null) { %>
                  in <%= workout.duration %> minutes
               <% } %>
+            </div>
+            <div> <!-- Remove workout button -->
+                <form action="/workouts/remove" method="POST" onsubmit="return confirm('Delete this workout?');">
+                    <!-- passing id -->
+                    <input type="hidden" name="workoutId" value="<%= workout.id %>" />
+                    <input type="submit" value="Delete" />
+                </form>
             </div>
           </li>
         <% }) %>

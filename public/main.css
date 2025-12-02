@@ -54,7 +54,7 @@ a:active {
 /* FORM STYLES */
 
 form {
-    background-color: rgb(204, 198, 198);
+    /* background-color: rgb(204, 198, 198); */
     padding: 2vw; 
     border-radius: 8px; 
     display: inline-block; /* Shrinks form to fit content */
