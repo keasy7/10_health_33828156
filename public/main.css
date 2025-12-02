@@ -83,6 +83,20 @@ input[type="submit"]:hover {
     background-color: rgb(72, 43, 79);
 }
 
+/* Text input fields */
+input[type="text"], 
+input[type="email"], 
+input[type="password"],
+input[type="search"],
+input[type="number"] {
+    padding: 0.5vw;
+    margin-left: 0.5vw;
+    font-size: 1.5vw;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    border: 0.1vw solid rgb(33, 64, 82);
+    border-radius: 4px;
+}
+
 /* LISTS */
 ul {
     list-style-type: none; /* Removes bullet point */
