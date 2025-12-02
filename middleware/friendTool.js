@@ -24,22 +24,65 @@ const removeFriend = (userId, friendId) => {
     });
 };
 
-const acceptFriendRequest = (userId, friendId) => {
+// const acceptFriendRequest = (userId, friendId) => {
+//     let sqlquery = `UPDATE friends SET status = 'accepted' WHERE user_id = ? AND friend_id = ?`;
+
+//     db.query(sqlquery, [userId, friendId], (err, results) => {
+//         if (err) {
+//             // Try swapping the userId and friendId if the first update fails
+//             db.query(sqlquery, [friendId, userId], (err2, results2) => {
+//                 if (err2) {
+//                     console.error('Error accepting friend request:', err2);
+//                     return;
+//                 } else {
+//                     console.log('Friend request accepted successfully (swapped IDs)');
+//                 }
+//             });
+//         } else {
+//             console.log('Friend request accepted successfully');
+//         }
+//     });
+// };
+
+const acceptFriendRequest = (userId, friendId, done) => {
+    // UPDATED: Using raw input values instead of forcing parseInt
+    console.log(`[DEBUG] Attempting to accept: User ${userId} -> Friend ${friendId}`);
+
     let sqlquery = `UPDATE friends SET status = 'accepted' WHERE user_id = ? AND friend_id = ?`;
 
     db.query(sqlquery, [userId, friendId], (err, results) => {
         if (err) {
-            // Try swapping the userId and friendId if the first update fails
+            console.error('Database error:', err);
+            if (done) return done(err);
+            return;
+        }
+
+        // Case 1: First try (User -> Friend)
+        if (results.affectedRows === 0) {
+            console.log('[DEBUG] Direct match not found. Swapping IDs...');
+            
+            // Case 2: Swapped try (Friend -> User)
             db.query(sqlquery, [friendId, userId], (err2, results2) => {
                 if (err2) {
-                    console.error('Error accepting friend request:', err2);
+                    console.error('Error accepting friend request (swapped):', err2);
+                    if (done) return done(err2);
                     return;
+                } 
+                
+                if (results2.affectedRows === 0) {
+                    console.log('[DEBUG] Failed: No friendship found in either direction.');
                 } else {
-                    console.log('Friend request accepted successfully (swapped IDs)');
+                    console.log('[DEBUG] Success: Request accepted (Swapped IDs)');
                 }
+
+                // SIGNAL FINISH (Swapped path) - Only called once here
+                if (done) return done(null);
             });
+            // CRITICAL: Function stops here. It does NOT fall through.
         } else {
-            console.log('Friend request accepted successfully');
+            console.log('[DEBUG] Success: Request accepted (Direct match)');
+            // SIGNAL FINISH (Direct path)
+            if (done) return done(null);
         }
     });
 };

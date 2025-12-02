@@ -25,11 +25,19 @@ router.post('/remove', redirectLogin, function (req, res, next) {
 );
 
 router.post('/accept', redirectLogin, function (req, res, next) {
+    console.log('Accept friend request route hit');
     const userId = req.session.userId;
     const friendId = req.body.friendId;
-
-    acceptFriendRequest(userId, friendId);
-    res.redirect(`/users/profile/${req.body.friendUsername}`);
-}
-);
+    console.log(userId, ' ', friendId);
+    // redirect only ran after DB operation is done.
+    acceptFriendRequest(userId, friendId, (err) => {
+        if (err) {
+            // If the DB failed, pass the error to Express
+            console.error('Error in acceptFriendRequest callback:', err);
+            return next(err); 
+        }
+        console.log('Redirecting after accepting friend request');
+        res.redirect(`/users/profile/${req.body.friendUsername}`);
+    });
+});
 module.exports = router
