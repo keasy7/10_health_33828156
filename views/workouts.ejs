@@ -2,18 +2,139 @@
 <html>
   <head>
     <title>Workouts - Health App</title>
-    <link rel="stylesheet"  type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <style>
+      /* Helper class to hide fields */
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <h1>Your Workouts</h1>
     <form action="/workouts/add" method="POST">
-        <!-- type, duration, distance, reps, sets -->
-        <p>Workout Type: <input id="type" type="text" name="type" /></p>
-        <p>Duration: <input id="duration" type="text" name="duration" /></p>
-        <p>Distance: <input id="distance" type="text" name="distance" /></p>
-        <p>Reps: <input id="reps" type="text" name="reps" /></p>
-        <p>Sets: <input id="sets" type="text" name="sets" /></p>
+        
+        <!-- 1. THE DROPDOWN -->
+        <p>
+            <label for="type">Workout Type:</label>
+            <select id="type" name="type" required>
+                <option value="" disabled selected>Select a workout...</option>
+                
+                <!-- Loop through the types passed from your database -->
+                <% workoutTypes.forEach(function(type) { %>
+                    <!-- 
+                       We verify the rules here and store them in data attributes.
+                       data-duration="1" means true, "0" means false.
+                    -->
+                    <option 
+                        value="<%= type.name %>"
+                        data-duration="<%= type.show_duration %>"
+                        data-distance="<%= type.show_distance %>"
+                        data-reps="<%= type.show_reps %>"
+                        data-sets="<%= type.show_sets %>"
+                    >
+                        <%= type.name %>
+                    </option>
+                <% }); %>
+            </select>
+        </p>
+
+        <!-- 2. THE DYNAMIC FIELDS -->
+        <!-- We wrap each input in a DIV with an ID so we can toggle it easily -->
+        
+        <div id="duration-container" class="hidden">
+            <p>Duration (min): <input id="duration" type="number" name="duration" /></p>
+        </div>
+
+        <div id="distance-container" class="hidden">
+            <p>Distance (km): <input id="distance" type="number" step="0.01" name="distance" /></p>
+        </div>
+
+        <div id="reps-container" class="hidden">
+            <p>Reps: <input id="reps" type="number" name="reps" /></p>
+        </div>
+
+        <div id="sets-container" class="hidden">
+            <p>Sets: <input id="sets" type="number" name="sets" /></p>
+        </div>
+
         <input type="submit" value="Add Workout" />
       </form>
+
+       <h2>Recent Workouts</h2>
+
+    <% if (recentWorkouts && recentWorkouts.length > 0) { %>
+        <% recentWorkouts.forEach(workout => { %>
+              <strong>Type:</strong> <%= workout.type %> 
+              <% if (workout.date_logged) { %>
+                 on <%= new Date(workout.date_logged).toDateString() %>
+              <% } %>
+            </div>
+
+            <div>
+              <strong>Achieved:</strong>
+              <% 
+                // Collect available metrics into an array
+                let metrics = [];
+                if (workout.distance !== null) metrics.push(workout.distance + " km");
+                if (workout.reps !== null) metrics.push(workout.reps + " reps");
+                if (workout.sets !== null) metrics.push(workout.sets + " sets");
+              %>
+              
+              <!-- Output metrics (e.g., "5 km, 3 sets") -->
+              <% if (metrics.length > 0) { %>
+                <%= metrics.join(", ") %>
+              <% } %>
+              
+              <!-- Output duration (e.g., " in 30 minutes") -->
+              <% if (workout.duration !== null) { %>
+                 in <%= workout.duration %> minutes
+              <% } %>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No workouts logged yet.</p>
+    <% } %>
+
+      <!-- 3. THE SCRIPT -->
+      <script>
+        // Get references to elements
+        const typeSelect = document.getElementById('type');
+        const durationDiv = document.getElementById('duration-container');
+        const distanceDiv = document.getElementById('distance-container');
+        const repsDiv = document.getElementById('reps-container');
+        const setsDiv = document.getElementById('sets-container');
+
+        function updateFields() {
+            // Get the selected option element
+            const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+            
+            // If nothing is validly selected, stop
+            if (!selectedOption.value) return;
+
+            // Helper function: show if rule is true/1, hide if false/0
+            // We check for '1' because MySQL booleans often return as 1/0 numbers
+            const toggle = (div, show) => {
+                if (show == 1 || show == 'true') {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                    // Optional: clear the value if hidden so we don't submit junk data
+                    div.querySelector('input').value = '';
+                }
+            };
+
+            // Read the data attributes from the <option>
+            toggle(durationDiv, selectedOption.dataset.duration);
+            toggle(distanceDiv, selectedOption.dataset.distance);
+            toggle(repsDiv, selectedOption.dataset.reps);
+            toggle(setsDiv, selectedOption.dataset.sets);
+        }
+
+        // Run this logic whenever the dropdown changes
+        typeSelect.addEventListener('change', updateFields);
+      </script>
   </body>
 </html>

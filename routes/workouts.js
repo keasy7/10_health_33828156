@@ -4,8 +4,23 @@ const router = express.Router()
 const { redirectLogin } = require('../middleware/auth');
 const { addWorkout, removeWorkout } = require('../middleware/workoutTool');
 
-router.get('/', redirectLogin, function(req, res, next){
-    res.render('workouts.ejs')
+router.get('/', (req, res, next) => {
+    // Fetch all types and their rules
+    let sql = "SELECT * FROM workout_types ORDER BY name ASC";
+    
+    db.query(sql, (err, results) => {
+        if (err) return next(err);
+        const recentWorkoutsSql = 'SELECT * FROM workouts WHERE user_id = ? ORDER BY date_logged DESC LIMIT 5';
+
+        db.query(recentWorkoutsSql, [req.session.userId], (err, workoutResults) => { // retrieve recent workouts
+        if (err) return next(err);
+
+        // Pass 'results' to the EJS file as 'workoutTypes'
+        res.render('workouts.ejs', { 
+            workoutTypes: results,
+            recentWorkouts: workoutResults
+        });
+    });});
 });
 
 router.post('/add', redirectLogin, function (req, res, next) {

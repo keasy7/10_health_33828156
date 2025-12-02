@@ -41,12 +41,18 @@ CREATE TABLE IF NOT EXISTS workouts (
 -- Workout types table (OPTIONAL — custom types)
 -- =============================================
 CREATE TABLE IF NOT EXISTS workout_types (
-    id          INT AUTO_INCREMENT,
-    user_id     INT,
-    name        VARCHAR(50),
+    id INT AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL UNIQUE, -- e.g. 'Running', 'Weightlifting'
     description VARCHAR(255),
-    PRIMARY KEY(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    
+    -- Boolean flags to control UI/Validation logic
+    -- TRUE means the field is required/shown, FALSE means it is hidden
+    show_duration BOOLEAN DEFAULT FALSE,
+    show_distance BOOLEAN DEFAULT FALSE,
+    show_reps BOOLEAN DEFAULT FALSE,
+    show_sets BOOLEAN DEFAULT FALSE,
+    
+    PRIMARY KEY(id)
 );
 
 -- =======================

@@ -7,3 +7,5 @@ INSERT INTO achievements (user_id, title, description, target_value, metric_type
 INSERT INTO workouts (user_id, type, duration, distance, reps, sets) VALUES (1, "running", 30, 5.00, NULL, NULL), (1, "weightlifting", 30, NULL, 10, 3);
 
 INSERT INTO user_preferences (user_id, show_distance, show_reps, show_sets) VALUES (1, TRUE, TRUE, TRUE);
+
+INSERT INTO workout_types (name, show_duration, show_distance, show_reps, show_sets) VALUES ('Running', TRUE, TRUE, FALSE, FALSE), ('Cycling', TRUE, TRUE, FALSE, FALSE), ('Weightlifting', TRUE, FALSE, TRUE, TRUE), ('Yoga', TRUE, FALSE, FALSE, FALSE), ('HIIT', TRUE, FALSE, FALSE, TRUE);
