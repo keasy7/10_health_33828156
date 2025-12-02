@@ -1,9 +1,14 @@
-/* background for whole page*/
+/* Global fonts sizes etc*/
 body {
     background-color: rgb(230, 230, 230);
     margin: 0;
     padding: 2vw; /* spacing around edge */
     text-align: center;
+
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.8vw; 
+    color: rgb(33, 64, 82); 
+    line-height: 1.6;
 }
 
 h1 {
@@ -19,13 +24,6 @@ h2 {
     
     color: rgb(72, 43, 79);
     margin-bottom: 1vw;
-}
-
-p, li {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    font-size: 1.8vw;
-  
-    color: rgb(33, 64, 82);
 }
 
 
@@ -61,6 +59,7 @@ form {
     border-radius: 8px; 
     display: inline-block; /* Shrinks form to fit content */
 }
+
 /* Style for submit buttons on forms*/
 input[type="submit"] {
     background-color: rgb(56, 0, 69);
@@ -82,4 +81,17 @@ input[type="submit"] {
 /* Button hover effect */
 input[type="submit"]:hover {
     background-color: rgb(72, 43, 79);
+}
+
+/* LISTS */
+ul {
+    list-style-type: none; /* Removes bullet point */
+    padding: 0;
+    margin: 0 auto; 
+}
+
+/* Applies to ALL lists*/
+li {
+    margin-bottom: 2vw; 
+    padding-bottom: 1vw;
 }

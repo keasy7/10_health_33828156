@@ -10,73 +10,89 @@
       <%= self ? "Your Profile" : (user.username + "'s Profile") %>
     </h1>
 
-    <p><strong>Username:</strong> <%= user.username %></p> <!-- username is always present -->
+    <p><strong>Username:</strong> <%= user.username %></p>
 
-    <% if (user.first_name || user.last_name) { %> <!-- checking if there are more names -->
+    <!-- checking if there are more names -->
+    <% if (user.first_name || user.last_name) { %> 
       <p><strong>Name:</strong> 
         <%= user.first_name ? user.first_name : '' %> 
         <%= user.last_name ? user.last_name : '' %>
       </p>
-    <% } %> <!-- conditional drawing of elements -->
+    <% } %>
 
-  <% 
-    // do not redeclare friends; it is already available <!-- CURRENT ISSUE IS HERE. NOT READING VARIABLES RIGHT-->
-    const friendship = friends.find(f => 
-      (f.user_id === loggedInUserId && f.friend_id === user.id) ||
-      (f.friend_id === loggedInUserId && f.user_id === user.id)
-    );
+    <!-- Logic for Friend Buttons: Only show if NOT viewing your own profile -->
+    <% if (!self) { %> 
+      
+      <% 
+        const friendship = friends.find(f => 
+          (f.user_id == loggedInUserId && f.friend_id == user.id) ||
+          (f.friend_id == loggedInUserId && f.user_id == user.id)
+        );
 
-    const isRecipientPending = friends.find(f => 
-      f.user_id === user.id && f.friend_id === loggedInUserId && f.status === 'pending'
-    );
-  %>
- <!--- logic to filter conditions for receiving friend requests -->
+        const isRecipientPending = friends.find(f => 
+          f.user_id == user.id && f.friend_id == loggedInUserId && f.status == 'pending'
+        );
+      %>
 
-      <% if (!friendship) { %> <!-- no friendship exists -->
-        <form method="POST" action="/friends/add">
-          <input type="hidden" name="friendId" value="<%= user.id %>" /> <!-- identifies friend in database -->
-          <input type="hidden" name="friendUsername" value="<%= user.username %>" /> <!-- used to redirect -->
-          <button type="submit">Add Friend</button>
-        </form>
+      <div class="friend-actions">
+        <% if (!friendship) { %> 
+          <!--  No friendship exists, show Add Button -->
+          <form method="POST" action="/friends/add">
+            <input type="hidden" name="friendId" value="<%= user.id %>" />
+            <input type="hidden" name="friendUsername" value="<%= user.username %>" />
+            <input type="submit" value="Add Friend" />
+          </form>
 
-      <% } else if (isRecipientPending) { %> <!-- you received request, can accept -->
-        <form method="POST" action="/friends/accept">
-          <input type="hidden" name="friendId" value="<%= user.id %>" /> <!-- identifies friend in database -->
-          <input type="hidden" name="friendUsername" value="<%= user.username %>" /> <!-- used to redirect -->
-          <button type="submit">Accept Request</button>
-        </form>
+        <% } else if (isRecipientPending) { %> 
+          <!-- They sent user a request, show Accept Button -->
+          <form method="POST" action="/friends/accept">
+            <input type="hidden" name="friendId" value="<%= user.id %>" />
+            <input type="hidden" name="friendUsername" value="<%= user.username %>" />
+            <input type="submit" value="Accept Request" />
+          </form>
 
-      <% } else if (friendship.status === 'pending') { %> <!-- request outgoing or awaiting response -->
-        <button disabled>Pending</button>
+        <% } else if (friendship.status == 'pending') { %> 
+          <!--  user sent THEM a request, show Pending -->
+          <button disabled>Pending</button>
 
-      <% } else if (friendship.status === 'accepted') { %> <!-- already friends -->
-        <button disabled>Friend</button>
-      <% } %>
+        <% } else if (friendship.status == 'accepted') { %> 
+          <!-- Already friends -->
+          <button disabled>Friend</button>
+        <% } %>
+      </div>
 
-    <% } %> <!-- end hide buttons on own profile -->
+    <% } %> <!-- End of check -->
 
     <h2>Recent Workouts</h2>
 
-    <% if (workouts && workouts.length > 0) { %> <!-- drawing only complete data -->
-      <ul>
+    <% if (workouts && workouts.length > 0) { %>
         <% workouts.forEach(workout => { %>
-          <li>
-            <strong>Type:</strong> <%= workout.type %><br/>
-            <% if (workout.duration !== null) { %>
-              <strong>Duration:</strong> <%= workout.duration %> minutes<br/>
-            <% } %>
-            <% if (workout.distance !== null) { %>
-              <strong>Distance:</strong> <%= workout.distance %> km<br/>
-            <% } %>
-            <% if (workout.reps !== null) { %>
-              <strong>Reps:</strong> <%= workout.reps %><br/>
-            <% } %>
-            <% if (workout.sets !== null) { %>
-              <strong>Sets:</strong> <%= workout.sets %><br/>
-            <% } %>
-            <% if (workout.date_logged) { %>
-              <strong>Date:</strong> <%= new Date(workout.date_logged).toDateString() %><br/>
-            <% } %>
+              <strong>Type:</strong> <%= workout.type %> 
+              <% if (workout.date_logged) { %>
+                 on <%= new Date(workout.date_logged).toDateString() %>
+              <% } %>
+            </div>
+
+            <div>
+              <strong>Achieved:</strong>
+              <% 
+                // Collect available metrics into an array
+                let metrics = [];
+                if (workout.distance !== null) metrics.push(workout.distance + " km");
+                if (workout.reps !== null) metrics.push(workout.reps + " reps");
+                if (workout.sets !== null) metrics.push(workout.sets + " sets");
+              %>
+              
+              <!-- Output metrics (e.g., "5 km, 3 sets") -->
+              <% if (metrics.length > 0) { %>
+                <%= metrics.join(", ") %>
+              <% } %>
+              
+              <!-- Output duration (e.g., " in 30 minutes") -->
+              <% if (workout.duration !== null) { %>
+                 in <%= workout.duration %> minutes
+              <% } %>
+            </div>
           </li>
         <% }) %>
       </ul>
