@@ -20,12 +20,9 @@
             <select id="type" name="type" required>
                 <option value="" disabled selected>Select a workout...</option>
                 
-                <!-- Loop through the types passed from your database -->
+                <!-- Loop through database types-->
                 <% workoutTypes.forEach(function(type) { %>
-                    <!-- 
-                       We verify the rules here and store them in data attributes.
-                       data-duration="1" means true, "0" means false.
-                    -->
+                    <!-- data-duration="1" means true, "0" means false.-->
                     <option 
                         value="<%= type.name %>"
                         data-duration="<%= type.show_duration %>"
@@ -40,7 +37,7 @@
         </p>
 
         <!-- 2. THE DYNAMIC FIELDS -->
-        <!-- We wrap each input in a DIV with an ID so we can toggle it easily -->
+        <!-- toggleable fields -->
         
         <div id="duration-container" class="hidden">
             <p>Duration (min): <input id="duration" type="number" name="duration" /></p>
