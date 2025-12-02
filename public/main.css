@@ -7,12 +7,8 @@ body {
 }
 
 h1 {
-    /* Suggested Font: Segoe UI or Roboto are clean and medical-looking */
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    
-    /* 5vw means the font size is 5% of the browser window's width */
     font-size: 4vw; 
-    
     color: rgb(56, 0, 69);
     margin-bottom: 1vw;
 }
@@ -60,9 +56,9 @@ a:active {
 /* FORM STYLES */
 
 form {
-    background-color: rgb(204, 198, 198); /* Requested darker grey */
-    padding: 2vw; /* Adds breathing room inside the grey box */
-    border-radius: 8px; /* Softens the corners */
+    background-color: rgb(204, 198, 198);
+    padding: 2vw; 
+    border-radius: 8px; 
     display: inline-block; /* Shrinks form to fit content */
 }
 /* Style for submit buttons on forms*/
