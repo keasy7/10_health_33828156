@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Workouts - Health App</title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1>Your Workouts</h1>
+    <form action="/workouts/add" method="POST">
+        <!-- type, duration, distance, reps, sets -->
+        <p>Workout Type: <input id="type" type="text" name="type" /></p>
+        <p>Duration: <input id="duration" type="text" name="duration" /></p>
+        <p>Distance: <input id="distance" type="text" name="distance" /></p>
+        <p>Reps: <input id="reps" type="text" name="reps" /></p>
+        <p>Sets: <input id="sets" type="text" name="sets" /></p>
+        <input type="submit" value="Add Workout" />
+      </form>
+  </body>
+</html>
