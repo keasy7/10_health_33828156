@@ -95,3 +95,27 @@ li {
     margin-bottom: 2vw; 
     padding-bottom: 1vw;
 }
+
+/* button styling */
+button {
+    background-color: rgb(56, 0, 69); /* Deep Purple background */
+    color: white; /* White text */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.5vw; /* Slightly smaller than main submit buttons */
+    padding: 0.5vw 1vw;
+    border: none;
+    border-radius: 4px; /* Matches link hover radius */
+    cursor: pointer;
+    display: inline-block; /* Allows them to sit next to text */
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: rgb(72, 43, 79); /* Lighter purple on hover */
+}
+
+/* Disabled state for buttons (e.g., Pending/Friend) */
+button:disabled {
+    background-color: rgb(119, 136, 153); /* Muted slate grey */
+    cursor: default;
+}

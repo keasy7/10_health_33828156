@@ -17,7 +17,9 @@
     <% users.forEach(user => { %>
       <li> <!--- displays users -->
         <%= user.username %>
-
+        <form action="/users/profile/<%= user.username %>" method="GET" style="margin-right: 5px;">
+            <button type="submit">View Profile</button>
+        </form> <!--- view profile button -->
         <% 
           let friendship = friends.find(f => 
             (f.user_id === loggedInUserId && f.friend_id === user.id) ||
