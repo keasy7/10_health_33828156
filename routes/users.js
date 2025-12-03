@@ -18,7 +18,7 @@ router.post('/registered',
     async function (req, res, next) {  // async handler - allows for other processing while hashing goes on
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.redirect('/users/register'); // redirect back to registration on validation error
         }
 
         try {
@@ -72,7 +72,7 @@ router.post('/loggedIn', function (req, res, next) {
         }
 
         if (results.length === 0) { //checks if username is correct
-            return res.send('Login failed, please check your username and password and try again. Username error.')
+            return res.redirect('/users/login'); //returns if username not found
         }
 
         const hashedPassword = results[0].password; // get hashed password from database
@@ -86,7 +86,7 @@ router.post('/loggedIn', function (req, res, next) {
                 req.session.userId = results[0].id; //creating session
                 return res.redirect('/dashboard');
             } else {
-                return res.send('Login failed, please check your username and password and try again.')
+                return res.redirect('/users/login'); //returns if password incorrect
             }
         })
     })
