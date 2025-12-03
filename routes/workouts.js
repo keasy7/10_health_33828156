@@ -3,6 +3,7 @@ const express = require("express")
 const router = express.Router()
 const { redirectLogin } = require('../middleware/auth');
 const { addWorkout, removeWorkout } = require('../middleware/workoutTool');
+const { query, validationResult, body } = require('express-validator');
 
 router.get('/', (req, res, next) => {
     // Fetch all types and their rules
@@ -23,7 +24,7 @@ router.get('/', (req, res, next) => {
     });});
 });
 
-router.post('/add', redirectLogin, function (req, res, next) {
+router.post('/add', redirectLogin,[body('duration').toFloat(), body('distance').toFloat(), body('reps').toInt(), body('sets').toInt()], function (req, res, next) {
     console.log('Add workout route hit');
     const userId = req.session.userId;
     const { type, duration, distance, reps, sets } = req.body;

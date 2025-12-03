@@ -1,3 +1,4 @@
+
 const addWorkout = (userId, type, duration, distance, reps, sets, done) => {
     console.log('Adding workout:', { userId, type, duration, distance, reps, sets });
 
