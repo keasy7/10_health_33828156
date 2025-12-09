@@ -3,11 +3,11 @@
   <head>
     <title>Register for the health app</title>
     <base href="/usr/365/">
-    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
   </head>
 
   <body>
-    <p><a href="./">Home</a></p>
+    <p><a href="/">Home</a></p>
     <h1>
       <%= self ? "Your Profile" : (user.username + "'s Profile") %>
     </h1>
@@ -39,7 +39,7 @@
       <div class="friend-actions">
         <% if (!friendship) { %> 
           <!--  No friendship exists, show Add Button -->
-          <form method="POST" action="friends/add">
+          <form method="POST" action="/friends/add">
             <input type="hidden" name="friendId" value="<%= user.id %>" />
             <input type="hidden" name="friendUsername" value="<%= user.username %>" />
             <input type="submit" value="Add Friend" />
@@ -47,7 +47,7 @@
 
         <% } else if (isRecipientPending) { %> 
           <!-- They sent user a request, show Accept Button -->
-          <form method="POST" action="friends/accept">
+          <form method="POST" action="/friends/accept">
             <input type="hidden" name="friendId" value="<%= user.id %>" />
             <input type="hidden" name="friendUsername" value="<%= user.username %>" />
             <input type="submit" value="Accept Request" />

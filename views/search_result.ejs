@@ -3,12 +3,12 @@
   <head>
     <title>Friend search results</title>
     <base href="/usr/365/">
-    <link rel="stylesheet"  type="text/css" href="main.css" />
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
   </head>
   <body>
-    <p><a href="./">Home</a></p>
+    <p><a href="/">Home</a></p>
     <h1>Friend Search Results</h1>
-        <form action="users/search_result" method="GET">
+        <form action="/users/search_result" method="GET">
         <input id="search-box" type="text" name="search_text">
         <input type="submit" value="Search" >
         </form>
@@ -18,7 +18,7 @@
     <% users.forEach(user => { %>
       <li> <!--- displays users -->
         <%= user.username %>
-        <form action="users/profile/<%= user.username %>" method="GET" style="margin-right: 5px;">
+        <form action="/users/profile/<%= user.username %>" method="GET" style="margin-right: 5px;">
             <button type="submit">View Profile</button>
         </form> <!--- view profile button -->
         <% 
@@ -33,13 +33,13 @@
         %> <!--- logic to filter conditions for receiving friend requests -->
 
         <% if (!friendship) { %>
-        <form method="POST" action="friends/add">
+        <form method="POST" action="/friends/add">
         <input type="hidden" name="friendId" value="<%= user.id %>" /> <!--- identifies friend in database -->
         <input type="hidden" name="friendUsername" value="<%= user.username %>" /><!--- used to redirect -->
         <button type="submit">Add Friend</button>
         </form>
         <% } else if (isRecipientPending) { %>
-        <form method="POST" action="friends/accept">
+        <form method="POST" action="/friends/accept">
         <input type="hidden" name="friendId" value="<%= user.id %>" /> <!--- identifies friend in database -->
         <input type="hidden" name="friendUsername" value="<%= user.username %>" /> <!--- used to redirect -->
         <button type="submit">Accept Request</button>
