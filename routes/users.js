@@ -49,7 +49,7 @@ router.post('/registered',
                 //const message = `Hello ${newRecord[0]} ${newRecord[1]}! You are now registered. We will send an email to ${newRecord[2]}.`;
                 //res.send(message);
                 console.log('User registered successfully:', newRecord[0]);
-                res.redirect(`/users/profile/${newRecord[0]}`); // newRecord[0] = username
+                res.redirect(`/usr/365/users/profile/${newRecord[0]}`); // newRecord[0] = username
 
             });
         } catch (err) {
