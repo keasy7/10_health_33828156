@@ -5,6 +5,8 @@ const { validate, hashPassword } = require('../middleware/inputVal');
 const { query, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 
+const BASE_PATH = '/usr/365';
+
 
 router.get('/register', function (req, res, next) {
     res.render('register.ejs', { errors: [] })
@@ -49,7 +51,7 @@ router.post('/registered',
                 //const message = `Hello ${newRecord[0]} ${newRecord[1]}! You are now registered. We will send an email to ${newRecord[2]}.`;
                 //res.send(message);
                 console.log('User registered successfully:', newRecord[0]);
-                res.redirect(`/users/profile/${newRecord[0]}`); // newRecord[0] = username
+                res.redirect(`${BASE_PATH}/users/profile/${newRecord[0]}`); // newRecord[0] = username
 
             });
         } catch (err) {
@@ -74,7 +76,7 @@ router.post('/loggedIn', function (req, res, next) {
         }
 
         if (results.length === 0) { //checks if username is correct
-            return res.redirect('/users/login'); //returns if username not found
+            return res.redirect(`${BASE_PATH}/users/login`); //returns if username not found
         }
 
         const hashedPassword = results[0].password; // get hashed password from database
@@ -86,9 +88,9 @@ router.post('/loggedIn', function (req, res, next) {
 
             if (result == true) {
                 req.session.userId = results[0].id; //creating session
-                return res.redirect('/dashboard');
+                return res.redirect(`${BASE_PATH}/dashboard`);
             } else {
-                return res.redirect('/users/login'); //returns if password incorrect
+                return res.redirect(`${BASE_PATH}/users/login`); //returns if password incorrect
             }
         })
     })

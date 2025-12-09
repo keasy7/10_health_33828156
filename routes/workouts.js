@@ -5,6 +5,8 @@ const { redirectLogin } = require('../middleware/auth');
 const { addWorkout, removeWorkout } = require('../middleware/workoutTool');
 const { query, validationResult, body } = require('express-validator');
 
+const BASE_PATH = '/usr/365';
+
 router.get('/', (req, res, next) => {
     // Fetch all types and their rules
     let sql = "SELECT * FROM workout_types ORDER BY name ASC";
@@ -30,7 +32,7 @@ router.post('/add', redirectLogin,[body('duration').toFloat(), body('distance').
     const { type, duration, distance, reps, sets } = req.body;
 
     addWorkout(userId, type, duration, distance, reps, sets);
-    res.redirect('/workouts');
+    res.redirect(`${BASE_PATH}/workouts`);
 });
 
 router.post('/remove', redirectLogin, function (req, res, next) {
@@ -38,7 +40,7 @@ router.post('/remove', redirectLogin, function (req, res, next) {
     const workoutId = req.body.workoutId;
 
     removeWorkout(userId, workoutId);
-    res.redirect('/workouts');
+    res.redirect(`${BASE_PATH}/workouts`);
 });
 
 module.exports = router

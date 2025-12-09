@@ -2,9 +2,11 @@ const express = require("express")
 const router = express.Router()
 const { redirectLogin } = require('../middleware/auth');
 
+const BASE_PATH = '/usr/365';
+
 router.get('/',function(req, res, next){
     if (req.session.userId) {
-        res.redirect('/dashboard',);
+    res.redirect(`${BASE_PATH}/dashboard`,);
         return;
     }else{  
     res.render('index.ejs')
@@ -27,7 +29,7 @@ router.get('/dashboard', (req, res, next) => {
   const userId = req.session.userId; // get the logged-in user ID from the session
 
   if (!userId) {
-    return res.redirect('/users/login'); // redirect if not logged in
+    return res.redirect(`${BASE_PATH}/users/login`); // redirect if not logged in
   }
 
   const sql = 'SELECT id, username, first_name, last_name, email FROM users WHERE id = ?';

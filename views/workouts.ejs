@@ -3,7 +3,7 @@
   <head>
     <title>Workouts - Health App</title>
     <base href="/usr/365/">
-    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
     <style>
       /* Helper class to hide fields */
       .hidden {
@@ -12,9 +12,9 @@
     </style>
   </head>
   <body>
-    <p><a href="/">Home</a></p>
+    <p><a href="./">Home</a></p>
     <h1>Your Workouts</h1>
-    <form action="/workouts/add" method="POST">
+    <form action="workouts/add" method="POST">
         
         <!-- 1. THE DROPDOWN -->
         <p>
@@ -91,7 +91,7 @@
               <% } %>
             </div>
             <div> <!-- Remove workout button -->
-                <form action="/workouts/remove" method="POST" onsubmit="return confirm('Delete this workout?');">
+                <form action="workouts/remove" method="POST" onsubmit="return confirm('Delete this workout?');">
                     <!-- passing id -->
                     <input type="hidden" name="workoutId" value="<%= workout.id %>" />
                     <input type="submit" value="Delete" />
