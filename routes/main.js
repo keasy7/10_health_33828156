@@ -19,7 +19,7 @@ router.get('/logout', redirectLogin, (req,res) => {
      if (err) {
         return res.redirect('./') //removing cookies information and sending them to homepage
    }
-    res.render('index.ejs');
+    res.redirect('./');
     })
 })
 
