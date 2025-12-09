@@ -93,20 +93,20 @@ const hashDefaultPasswords = () => {
 hashDefaultPasswords();
 
 // Load the route handlers
-const mainRoutes = require("./routes/main");
-app.use('/usr/365/', mainRoutes);
+const mainRoutes = require("./routes/main")
+app.use('/', mainRoutes)
 
 // Load the route handlers for /users
-const usersRoutes = require('./routes/users');
-app.use('/usr/365/users', usersRoutes);
+const usersRoutes = require('./routes/users')
+app.use('/users', usersRoutes)
 
 // Load the route handlers for /workouts
-const workoutRoutes = require('./routes/workouts');
-app.use('/usr/365/workouts', workoutRoutes);
+const workoutRoutes = require('./routes/workouts')
+app.use('/workouts', workoutRoutes)
 
 // Load the route handlers for /friends
 const friendsRoutes = require('./routes/friends');
-app.use('/usr/365/friends', friendsRoutes);
+app.use('/friends', friendsRoutes);
 
 // Start the web app listening
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
