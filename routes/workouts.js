@@ -30,7 +30,7 @@ router.post('/add', redirectLogin,[body('duration').toFloat(), body('distance').
     const { type, duration, distance, reps, sets } = req.body;
 
     addWorkout(userId, type, duration, distance, reps, sets);
-    res.redirect('/workouts');
+    res.redirect('/usr/365/workouts');
 });
 
 router.post('/remove', redirectLogin, function (req, res, next) {
@@ -38,7 +38,7 @@ router.post('/remove', redirectLogin, function (req, res, next) {
     const workoutId = req.body.workoutId;
 
     removeWorkout(userId, workoutId);
-    res.redirect('/workouts');
+    res.redirect('/usr/365/workouts');
 });
 
 module.exports = router
