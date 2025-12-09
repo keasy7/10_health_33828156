@@ -1,6 +1,6 @@
 const redirectLogin = (req, res, next) => {
   if (!req.session.userId) {
-    return res.redirect('/users/login');
+    return res.redirect('/usr/365/users/login');
   }
   next();
 }
