@@ -6,6 +6,18 @@
   </head>
   <body>
     <h1>Register for the health app</h1>
+    
+    <% if (errors && errors.length > 0) { %>
+      <div style="color: red;">
+        <h3>Registration failed. Please fix the following errors:</h3>
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.msg %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+    
     <form method="POST" action="registered">
         <p>First name: <input id="first" type="text" name="first" /></p>
         <p>Last name: <input id="last" type="text" name="last" /></p>

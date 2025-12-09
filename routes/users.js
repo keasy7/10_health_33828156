@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 
 
 router.get('/register', function (req, res, next) {
-    res.render('register.ejs')
+    res.render('register.ejs', { errors: [] })
 })
 
 router.post('/registered', 
@@ -18,7 +18,8 @@ router.post('/registered',
     async function (req, res, next) {  // async handler - allows for other processing while hashing goes on
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.redirect('/users/register'); // redirect back to registration on validation error
+            console.log('Validation errors:', errors.array());
+            return res.render('register.ejs', { errors: errors.array() }); // render with errors instead of redirect
         }
 
         try {
@@ -27,15 +28,15 @@ router.post('/registered',
 
             // 2. Prepare sanitized values for DB insertion
             const newRecord = [
-                req.sanitize(req.body.first),
-                req.sanitize(req.body.last),
-                req.sanitize(req.body.email),
                 req.sanitize(req.body.username),
-                hashedPassword
+                hashedPassword,
+                req.sanitize(req.body.email),
+                req.sanitize(req.body.first),
+                req.sanitize(req.body.last)
             ];
 
             // 3. Insert into database
-            let sqlquery = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?,?,?,?,?)";
+            let sqlquery = "INSERT INTO users (username, password, email, first_name, last_name) VALUES (?,?,?,?,?)";
             db.query(sqlquery, newRecord, (err, result) => {
                 if (err) {
                     return next(err);
@@ -47,7 +48,8 @@ router.post('/registered',
                 // 5. Send confirmation message
                 //const message = `Hello ${newRecord[0]} ${newRecord[1]}! You are now registered. We will send an email to ${newRecord[2]}.`;
                 //res.send(message);
-                res.redirect(`/users/profile/${newRecord[3]}`); // newRecord[3] = username
+                console.log('User registered successfully:', newRecord[0]);
+                res.redirect(`/users/profile/${newRecord[0]}`); // newRecord[0] = username
 
             });
         } catch (err) {
