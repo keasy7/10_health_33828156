@@ -12,7 +12,7 @@ router.post('/add', redirectLogin, function (req, res, next) {
     const friendId = req.body.friendId;
 
     addFriend(userId, friendId);
-    res.redirect(`/users/profile/${req.body.friendUsername}`);
+    res.redirect(`./users/profile/${req.body.friendUsername}`);
 });
 
 router.post('/remove', redirectLogin, function (req, res, next) {
@@ -20,7 +20,7 @@ router.post('/remove', redirectLogin, function (req, res, next) {
     const friendId = req.body.friendId;
 
     removeFriend(userId, friendId);
-    res.redirect(`/users/profile/${req.body.friendUsername}`);
+    res.redirect(`./users/profile/${req.body.friendUsername}`);
 }
 );
 
@@ -37,7 +37,7 @@ router.post('/accept', redirectLogin, function (req, res, next) {
             return next(err); 
         }
         console.log('Redirecting after accepting friend request');
-        res.redirect(`/users/profile/${req.body.friendUsername}`);
+        res.redirect(`./users/profile/${req.body.friendUsername}`);
     });
 });
 module.exports = router

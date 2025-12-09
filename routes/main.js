@@ -4,7 +4,7 @@ const { redirectLogin } = require('../middleware/auth');
 
 router.get('/',function(req, res, next){
     if (req.session.userId) {
-        res.redirect('/dashboard',);
+        res.redirect('./dashboard',);
         return;
     }else{  
     res.render('index.ejs')
@@ -27,7 +27,7 @@ router.get('/dashboard', (req, res, next) => {
   const userId = req.session.userId; // get the logged-in user ID from the session
 
   if (!userId) {
-    return res.redirect('/users/login'); // redirect if not logged in
+    return res.redirect('./users/login'); // redirect if not logged in
   }
 
   const sql = 'SELECT id, username, first_name, last_name, email FROM users WHERE id = ?';

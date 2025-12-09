@@ -74,7 +74,7 @@ router.post('/loggedIn', function (req, res, next) {
         }
 
         if (results.length === 0) { //checks if username is correct
-            return res.redirect('/users/login'); //returns if username not found
+            return res.redirect('./users/login'); //returns if username not found
         }
 
         const hashedPassword = results[0].password; // get hashed password from database
@@ -86,9 +86,9 @@ router.post('/loggedIn', function (req, res, next) {
 
             if (result == true) {
                 req.session.userId = results[0].id; //creating session
-                return res.redirect('/dashboard');
+                return res.redirect('./dashboard');
             } else {
-                return res.redirect('/users/login'); //returns if password incorrect
+                return res.redirect('./users/login'); //returns if password incorrect
             }
         })
     })
