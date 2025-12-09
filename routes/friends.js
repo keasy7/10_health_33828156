@@ -37,7 +37,7 @@ router.post('/accept', redirectLogin, function (req, res, next) {
             return next(err); 
         }
         console.log('Redirecting after accepting friend request');
-        res.redirect(`/users/profile/${req.body.friendUsername}`);
+        res.redirect(`/users/profile/${req.body.friendUsername}?`);
     });
 });
 module.exports = router
