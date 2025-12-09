@@ -86,7 +86,7 @@ router.post('/loggedIn', function (req, res, next) {
 
             if (result == true) {
                 req.session.userId = results[0].id; //creating session
-                return res.redirect('/dashboard');
+                return res.redirect('/usr/365/dashboard');
             } else {
                 return res.redirect('/users/login'); //returns if password incorrect
             }
