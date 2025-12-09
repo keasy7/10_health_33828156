@@ -19,8 +19,8 @@ app.set('view engine', 'ejs')
 // Set up the body parser 
 app.use(express.urlencoded({ extended: true }))
 
-// Set up public folder (for css and static js) under the deployed base path
-app.use('/usr/365', express.static(path.join(__dirname, 'public')))
+// Set up public folder (for css and static js) UPDATE THIS
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Set up express-sanitizer
 app.use(expressSanitizer());
