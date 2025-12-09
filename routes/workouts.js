@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
         db.query(recentWorkoutsSql, [req.session.userId], (err, workoutResults) => { // retrieve recent workouts
         if (err) return next(err);
 
-        // Pass 'results' to the EJS file as 'workoutTypes'
+        // pass results as 'workoutTypes'
         res.render('workouts.ejs', { 
             workoutTypes: results,
             recentWorkouts: workoutResults

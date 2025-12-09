@@ -23,10 +23,10 @@ router.post('/registered',
         }
 
         try {
-            // 1. Hash the password asynchronously
+            // hash password
             const hashedPassword = await hashPassword(req.body.password);
 
-            // 2. Prepare sanitized values for DB insertion
+            //  clean inputs
             const newRecord = [
                 req.sanitize(req.body.username),
                 hashedPassword,
@@ -35,17 +35,17 @@ router.post('/registered',
                 req.sanitize(req.body.last)
             ];
 
-            // 3. Insert into database
+            //insert into database
             let sqlquery = "INSERT INTO users (username, password, email, first_name, last_name) VALUES (?,?,?,?,?)";
             db.query(sqlquery, newRecord, (err, result) => {
                 if (err) {
                     return next(err);
                 }
 
-                // 4. Create session using the inserted user's ID from the actual table
+                // create session using the inserted user's ID from the actual table
                 req.session.userId = result.insertId; 
 
-                // 5. Send confirmation message
+                //  confirmation message
                 //const message = `Hello ${newRecord[0]} ${newRecord[1]}! You are now registered. We will send an email to ${newRecord[2]}.`;
                 //res.send(message);
                 console.log('User registered successfully:', newRecord[0]);
@@ -94,7 +94,7 @@ router.post('/loggedIn', function (req, res, next) {
     })
 })
 
-router.get('/profile/:username', async (req, res, next) => { // CURRENT ISSUE IS HERE. PROFILE PAGE NOT RECEIVING FRIENDS VARIABLE
+router.get('/profile/:username', async (req, res, next) => { 
     const username = req.params.username;
 
     try {
@@ -152,7 +152,7 @@ router.get('/search_result',
                         if (err2) return next(err2);
 
 
-            // Step 3: render template
+            
             res.render('search_result.ejs', { users: result, friends, loggedInUserId });
         });
     });
